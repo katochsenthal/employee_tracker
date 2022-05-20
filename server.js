@@ -3,12 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const mysql = require("mysql2");
 
-const PORT = process.env.PORT || 3001;
 const app = express();
-
-app.get("/", (req, res) => {
-  res.send("express working!");
-});
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
@@ -28,52 +23,44 @@ const promptMenu = () => {
       {
         type: "list",
         name: "menu",
+        message: "What would you like to do?",
         choices: [
-          "View all departments",
-          "View all roles",
-          "View all employees",
-          "Add a department",
-          "Add a role",
-          "Add an employee",
-          "Update an employee role",
-          "Exit",
+          "view all departments",
+          "view all roles",
+          "view all employees",
+          "add a department",
+          "add a role",
+          "add an employee",
+          "update an employee role",
+          "exit",
         ],
       },
     ])
     .then((userAnswer) => {
       switch (userAnswer.menu) {
-        case "View all departments":
-          console.log("Departments");
+        case "view all departments":
+          console.log("view departments");
           break;
-
-        case "View all roles":
-          console.log("Roles");
+        case "view all roles":
+          console.log("view roles");
           break;
-
-        case "View all employees":
-          console.log("Employees");
+        case "view all employees":
+          console.log("view employees");
           break;
-
         case "add a department":
-          console.log("Add a department");
+          console.log("add departments");
           break;
-
         case "add a role":
-          console.log("add a role");
+          console.log("add role");
           break;
-
-        case "add a employee":
-          console.log("add a employee");
+        case "add an employee":
+          console.log("add employee");
           break;
-
         case "update an employee role":
-          console.log("update a employee role");
+          console.log("update employee role");
           break;
-
         default:
           process.exit();
       }
     });
 };
-
-promptMenu();
