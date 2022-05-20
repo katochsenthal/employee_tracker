@@ -14,7 +14,7 @@ VALUES
     ('Accountant', 90000, 3),
     ('Hr Manager', 70000, 4)
     
-INSERT INTO employees (first_name, last_name, role_id, manager_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
   VALUES
   ("Joe", "Lowe", 1, NULL),
   ("Hu", "Chang", 2, 1),

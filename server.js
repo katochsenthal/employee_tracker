@@ -71,4 +71,8 @@ const promptMenu = () => {
     });
 };
 
+const selectDepartments = () => {
+  connection.query("SELECT * FROM department;", (err, results) => {});
+};
+
 promptMenu();
