@@ -38,41 +38,74 @@ const promptMenu = () => {
     .then((userAnswer) => {
       switch (userAnswer.menu) {
         case "View all departments":
+          viewDepartments();
           console.log("Departments");
           break;
 
         case "View all roles":
+          viewRoles();
           console.log("Roles");
           break;
 
         case "View all employees":
+          viewEmployee();
           console.log("Employees");
           break;
 
-        case "add a department":
-          console.log("Add a department");
+        case "Add a department":
+          addDepartment();
+          console.log("Add department");
           break;
 
-        case "add a role":
+        case "Add a role":
           console.log("add a role");
           break;
 
-        case "add a employee":
+        case "Add a employee":
           console.log("add a employee");
           break;
 
-        case "update an employee role":
+        case "Update an employee role":
           console.log("update a employee role");
           break;
 
         default:
+          console.log("Default", userAnswer.menu);
           process.exit();
       }
     });
 };
 
-const selectDepartments = () => {
-  connection.query("SELECT * FROM department;", (err, results) => {});
+const viewDepartments = () => {
+  connection.query("SELECT * FROM department;", (err, results) => {
+    console.table(results);
+  });
+};
+
+const viewRoles = () => {
+  connection.query("SELECT * FROM role;", (err, results) => {
+    console.table(results);
+  });
+};
+
+const viewEmployee = () => {
+  connection.query("SELECT * FROM employee;", (err, results) => {
+    console.table(results);
+  });
+};
+
+const addDepartment = () => {
+  connection.query(
+    'INSERT INTO department (name) VALUES("Software2");',
+    // if condition result.affectedRows === 1;
+    // select statement to show department table;
+    (err, results) => {
+      if ({ affectedRows } === 1) {
+        `SELECT * FROM department`;
+      }
+      console.table(results);
+    }
+  );
 };
 
 promptMenu();
