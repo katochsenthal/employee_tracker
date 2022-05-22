@@ -39,22 +39,18 @@ const promptMenu = () => {
       switch (userAnswer.menu) {
         case "View all departments":
           viewDepartments();
-          console.log("Departments");
           break;
 
         case "View all roles":
           viewRoles();
-          console.log("Roles");
           break;
 
         case "View all employees":
           viewEmployee();
-          console.log("Employees");
           break;
 
         case "Add a department":
           addDepartment();
-          console.log("Add department");
           break;
 
         case "Add a role":
@@ -94,18 +90,32 @@ const viewEmployee = () => {
   });
 };
 
-const addDepartment = () => {
-  connection.query(
-    'INSERT INTO department (name) VALUES("Software2");',
-    // if condition result.affectedRows === 1;
-    // select statement to show department table;
-    (err, results) => {
-      if ({ affectedRows } === 1) {
-        `SELECT * FROM department`;
-      }
-      console.table(results);
-    }
-  );
-};
-
 promptMenu();
+
+const addDepartment = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "department",
+        message: "What is the name of the department you would like to add?",
+        validate: (departmentName) => {
+          if (departmentName) {
+            return true;
+          } else {
+            console.log("Please enter the name of your department");
+            return false;
+          }
+        },
+      },
+    ])
+    .then(({ department }) => {
+      console.log(department);
+      const sql = `INSERT INTO department(name) VALUES(?)`;
+      connection.query(sql, department, (err, results) => {
+        if (err) throw err;
+        console.log(`${department} had been added to the database`);
+      });
+      viewDepartments();
+    });
+};
