@@ -57,7 +57,7 @@ const promptMenu = () => {
           break;
 
         case "Update an employee role":
-          console.log("update a employee role");
+          updateRole();
           break;
 
         default:
@@ -248,5 +248,53 @@ const addEmployee = async () => {
 // select employee table
 
 // insert the user response to employee role info.
+
+const updateRole = () => {
+  return connection
+    .promise()
+    .query(`SELECT id, title, salary, department_id FROM role;`)
+    .then(([roles]) => {
+      let roleChoices = roles.map(({ id, title }) => ({
+        value: id,
+        name: title,
+      }));
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "role",
+            message: "Which role do you want to update",
+            choices: roleChoices,
+          },
+        ])
+        .then((role) => {
+          console.log(role);
+          inquirer
+            .prompt([
+              {
+                type: "input",
+                name: "title",
+                message: "Enter the name of role title",
+              },
+              {
+                type: "input",
+                name: "salary",
+                message: "Enter the role's salary",
+              },
+            ])
+            .then(({ title, salary }) => {
+              const query = connection.query(
+                " UPDATE role SET title= ?, salary= ? WHERE id = ?",
+                [title, salary, role.role],
+                function (err, res) {
+                  if (err) throw err;
+                }
+              );
+              viewRoles();
+            })
+            .then(() => promptMenu());
+        });
+    });
+};
 
 promptMenu();
