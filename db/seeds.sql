@@ -22,4 +22,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
   ("Jolly", "Happy", 4, NULL),
   ("Sam", "Harris", 5, NULL),
   ("Tom", "Bobby", 5, NULL);
+
   

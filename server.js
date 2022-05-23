@@ -52,7 +52,7 @@ const promptMenu = () => {
           addRole();
           break;
 
-        case "Add a employee":
+        case "Add an employee":
           addEmployee();
           break;
 
@@ -152,16 +152,16 @@ const addRole = () => {
           {
             type: "list",
             name: "department",
-            message: "Select this role's department?",
+            message: "What is the department of this role?",
             choices: departmentChoices,
           },
         ])
-        .then(({ roleTitle, roleSalary, department_id }) => {
+        .then(({ roleTitle, roleSalary, department }) => {
           const sql = `INSERT INTO role SET ?`;
           const roleData = {
             title: roleTitle,
             salary: roleSalary,
-            department_id: department.id,
+            department_id: department,
           };
           const query = connection.query(sql, roleData, (err, results) => {
             if (err) throw err;
@@ -171,5 +171,82 @@ const addRole = () => {
         });
     });
 };
+
+const addEmployee = async () => {
+  // grab roles data
+  const roleSql = "SELECT id, title from role;";
+  const employeeSql = "SELECT id, first_name, last_name FROM employee;";
+
+  let roleResults;
+  let employeeResults;
+
+  connection.query(roleSql, (err, result) => {
+    roleResults = result.map(({ id, title }) => {
+      return {
+        name: title,
+        value: id,
+      };
+    });
+  });
+
+  connection.query(employeeSql, (err, result) => {
+    employeeResults = result.map(({ id, first_name, last_name }) => {
+      return {
+        name: `${first_name} ${last_name}`,
+        value: id,
+      };
+    });
+  });
+
+  // sleep
+  await new Promise((r) => setTimeout(r, 1000));
+
+  // user prompts to get employee info
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Enter employee's first name?",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Enter employee's last name?",
+      },
+      {
+        type: "list",
+        name: "role",
+        message: "Select this employees role",
+        choices: roleResults,
+      },
+      {
+        type: "list",
+        name: "manager",
+        message: "Select this employees manager",
+        choices: employeeResults,
+      },
+    ])
+    .then(({ firstName, lastName, role, manager }) => {
+      const sql = `INSERT INTO employee SET ? `;
+      const employeeData = {
+        first_name: firstName,
+        last_name: lastName,
+        role_id: role,
+        manager_id: manager,
+      };
+      const query = connection.query(sql, employeeData, (err, results) => {
+        if (err) throw err;
+        console.log(`new employee Data has been added to the employee table`);
+      });
+      viewEmployee();
+    });
+};
+
+// step1 user prompts to update employees role
+
+// select employee table
+
+// insert the user response to employee role info.
 
 promptMenu();
