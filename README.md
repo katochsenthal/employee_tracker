@@ -8,7 +8,7 @@ This is a command line application to help manage company's employee database. F
 
 ## Usage and Demo
 
-Click [here](https://drive.google.com/file/d/1Qh0W9LmmvQRHwqZN5xHCOU2-z52WzBZK/view) for video Demo.
+Click [here](https://drive.google.com/file/d/1459OAXcEo3DHz16SrmsWdKwnHwdLagFJ/view?usp=sharing) for video Demo.
 
 Screen Shots
 
